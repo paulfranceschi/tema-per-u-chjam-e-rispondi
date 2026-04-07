@@ -1,0 +1,690 @@
+import React, { useState, useEffect } from 'react';
+
+const App = () => {
+  // Constants
+  const CIS = 0;
+  const SAR = 1;
+  const TAR = 2;
+  const FRE = 3;
+  const ITA = 4;
+  const ENG = 5;
+
+  // Data dictionaries
+  const dic = {
+    animal: [
+      ["a camella", "a camedda", "a camedda"],
+      ["a capinera", "a capinera", "a capinera"],
+      ["a capra", "a capra", "a capra"],
+      ["a culombula", "a culombula", "a culombula"],
+      ["a cuppulata", "a cuparchjata", "a cuparchjata"],
+      ["a curnachja", "a currachja", "a currachja"],
+      ["a ghjandaghja", "a ghjandaghja", "a ghjandaghja"],
+      ["a ghjira", "a ghjira", "a ghjira"],
+      ["a ghjumenta di prete", "a ghjumenta di preti", "a levafrebba"],
+      ["a giraffa", "a giraffa", "a giraffa"],
+      ["a lovvia", "a lovvia", "a lovvia"],
+      ["a merula", "a merula", "a merula"],
+      ["a merula turchina", "a merula turchina", "a merula turchina"],
+      ["a mosca", "a musca", "a mosca"],
+      ["a musculina", "a musculina", "a musculina"],
+      ["a mula", "a mula", "a mula"],
+      ["a murena", "a murena", "a marena"],
+      ["a muvra", "a muvra", "a muvra"],
+      ["a pantera", "a pantera", "a pantera"],
+      ["a pecura", "a pecura", "a pecura"],
+      ["a pulgia", "a pulgia", "a pulgia"],
+      ["a puppusgiula", "a puppusgiula", "a puppusgiula"],
+      ["a ranochja", "a ranochja", "a ranochja"],
+      ["a sarpe", "a sarpe", "a sarpe"],
+      ["a seppia", "a seppia", "a seppia"],
+      ["a turdulella", "a turduledda", "a turduledda"],
+      ["a vacca", "a vacca", "a vacca"],
+      ["a vespa", "a vespa", "a vespa"],
+      ["a volpe", "a vulpi", "a volpi"],
+      ["a zinzala", "a zinzala", "a zinzala"],
+      ["l'acertula", "a biciartula", "l'aciartula"],
+      ["l'acula", "l'acula", "l'acula"],
+      ["l'agnellu", "l'agneddu", "l'agneddu"],
+      ["l'altore", "l'altori", "l'altori"],
+      ["l'apa", "l'abba", "l'abba"],
+      ["l'arcimulu", "l'arcimulu", "l'arcimulu"],
+      ["l'elefante", "l'alifanti", "l'alifanti"],
+      ["l'orsu", "l'ursu", "l'orsu"],
+      ["u beccu", "u biccu", "u beccu"],
+      ["u boiu", "u boiu", "u boiu"],
+      ["u bufone", "u bufonu", "u bufonu"],
+      ["u camellu", "u cameddu", "u cammeddu"],
+      ["u cane", "u ghjacaru", "u ghjacaru"],
+      ["u caprettu", "u caprettu", "u caprettu"],
+      ["u cavallu", "u cavaddu", "u cavaddu"],
+      ["u cervu", "u cervu", "u cervu"],
+      ["u cinghjale", "u singhjari", "u cignali"],
+      ["u ciocciu", "u cioccu", "u cioccu"],
+      ["u corbu", "u corbu", "u corbu"],
+      ["u cruccudillu", "u cruccudillu", "u cruccudillu"],
+      ["u cuccu", "u cuccu", "u cuccu"],
+      ["u cunigliulu", "u cunigliulu", "u cunigliulu"],
+      ["u drumadariu", "u drumadariu", "u drumadariu"],
+      ["u falchettu", "u falchettu", "u falchettu"],
+      ["u falcu", "u falcu", "u falcu"],
+      ["u fiulanciu", "u fiulanciu", "u fiulanciu"],
+      ["u ghjallu", "u ghjaddu", "u ghjaddu"],
+      ["u ghjattu", "u ghjattu", "u ghjattu"],
+      ["u grillu", "u griddu", "u griddu"],
+      ["u lione", "u lionu", "u lionu"],
+      ["u lupu", "u lubbu", "u lubbu"],
+      ["u mulu", "u mulu", "u mulu"],
+      ["u muntone", "u muntonu", "u muntonu"],
+      ["u muscone", "u musconu", "u musconu"],
+      ["u muvrone", "u muvronu", "u muvronu"],
+      ["u paone", "u paonu", "u paonu"],
+      ["u pesciu sega", "u pesciu sega", "u pesciu sega"],
+      ["u pesciu spada", "u pesciu spada", "u pesciu spada"],
+      ["u pettirossu", "u pettirussu", "u pettirossu"],
+      ["u pichjettu", "u pichjettu", "u pichjettu"],
+      ["u pichjaronu", "u pichjaronu", "u pichjaronu"],
+      ["u polpu", "u pulpu", "u polpu"],
+      ["u porcu", "u porcu", "u porcu"],
+      ["u pulletru", "u puddetru", "u puddetru"],
+      ["u ragnu", "u ragnu", "u ragnu"],
+      ["u ricciu", "u ricciu", "u ricciu"],
+      ["u ruspu", "u ruspu", "u ruspu"],
+      ["u russignolu", "u russignolu", "u russignolu"],
+      ["u sumere", "l'asinu", "u sameri"],
+      ["u tigra", "u tigra", "u tigra"],
+      ["u tordulu", "u tordulu", "u tordulu"],
+      ["u toru", "u toru", "u toru"],
+      ["u varru", "u varru", "u varru"],
+      ["u vitellu", "u viteddu", "u viteddu"],
+      ["u zinu", "u zinu", "u zinu"]
+    ],
+    object: [
+      ["a barca", "a barca", "a barca"],
+      ["a buttiglia", "a butteglia", "a butteglia"],
+      ["a carrega", "a carrega", "a carrega"],
+      ["a cazzarola", "a cazzarola", "a cazzarola"],
+      ["a cuchjara", "a cuchjara", "a cuchjara"],
+      ["a cuchjarina", "a cuchjarina", "a cuchjarina"],
+      ["a cultella", "a cultedda", "a cultedda"],
+      ["a damisgiana", "a damisgiana", "a damisgiana"],
+      ["a falcia", "a falcia", "a falcia"],
+      ["a furcina", "a furcina", "a furcina"],
+      ["a marra", "a marra", "a marra"],
+      ["a mazza", "a mazza", "a mazza"],
+      ["a media", "a meda", "a meda"],
+      ["a mostra", "a mostra", "a mostra"],
+      ["a padella", "a frissoghja", "a frissoghja"],
+      ["a pala", "a pala", "a pala"],
+      ["a pignatta", "a pignatta", "a pignatta"],
+      ["a pindina", "a pindina", "a pindina"],
+      ["a piola", "a piola", "a piola"],
+      ["a pistola", "a pistola", "a pistola"],
+      ["a spada", "a spada", "a spada"],
+      ["a suppera", "a suppera", "a suppera"],
+      ["a tazzina", "a tazzina", "a tazzina"],
+      ["a televisione", "a televisioni", "a televisioni"],
+      ["a tinaglia", "a tinaglia", "a tinaglia"],
+      ["a tiretta", "a tiretta", "a tiretta"],
+      ["a zappetta", "a zappetta", "a zappetta"],
+      ["l'incudine", "l'alcudina", "l'alcudina"],
+      ["l'imbutu", "l'umbutu", "l'umbutu"],
+      ["l'ordinatore", "l'urdinatori", "l'urdinatori"],
+      ["u bichjere", "u bichjeri", "u bichjeri"],
+      ["u camminu", "u sciaminè", "u sciaminè"],
+      ["u chjodu", "u chjodu", "u chjodu"],
+      ["u cuchjarone", "u cuchjaronu", "u cuchjaronu"],
+      ["u cultellu", "u culteddu", "u culteddu"],
+      ["u falcinu", "u falcinu", "u falcinu"],
+      ["u fucile", "u fucili", "u fucili"],
+      ["u lettu", "u lettu", "u lettu"],
+      ["u libru", "u libru", "u libru"],
+      ["u martellu", "u marteddu", "u martedu"],
+      ["u mazzolu", "u mazzolu", "u mazzolu"],
+      ["u pinnatu", "u pinnatu", "u pinnatu"],
+      ["u rastellu", "u rasteddu", "u rasteddu"],
+      ["u spinzone", "u spinzonu", "u spinzonu"],
+      ["u tappu", "u tappu", "u tappu"],
+      ["u taulinu", "a tola", "a tola"],
+      ["u telefuninu", "u telefuninu", "u telefuninu"],
+      ["u tornavita", "u tornavita", "u tornavita"],
+      ["u zappone", "u zapponu", "u zapponu"]
+    ],
+    month: [
+      ["aostu", "austu", "aostu"],
+      ["aprile", "aprili", "aprili"],
+      ["dicembre", "dicembri", "dicembri"],
+      ["ferraghju", "frivaghju", "frivaghju"],
+      ["ghjennaghju", "ghjinnaghju", "ghjinnaghju"],
+      ["ghjunghju", "ghjunghju", "ghjunghju"],
+      ["lugliu", "luddu", "lugliu"],
+      ["maghju", "maghju", "maghju"],
+      ["marzu", "marzu", "marzu"],
+      ["nuvembre", "nuvembri", "nuvembri"],
+      ["sittembre", "sittembri", "sittembri"],
+      ["uttobre", "uttrovi", "uttrovi"]
+    ],
+    season: [
+      ["l'inguernu", "l'invernu", "l'invernu"],
+      ["l'istate", "l'istati", "l'istati"],
+      ["l'auturnu", "u vaghjimu", "u vaghjimu"],
+      ["u veranu", "u branu", "u branu"]
+    ],
+    colour: [
+      ["u biancu", "u biancu", "u biancu"],
+      ["u giallu", "u giaddu", "u giaddu"],
+      ["u grisgiu", "u grisgiu", "u grisgiu"],
+      ["u neru", "u neru", "u neru"],
+      ["u rossu", "u russu", "u rossu"],
+      ["u turchinu", "u turchinu", "u turchinu"],
+      ["u verde", "u verdi", "u verdi"],
+      ["u viulettu", "u viulettu", "u viulettu"]
+    ],
+    tree: [
+      ["a fica", "a fica", "a fica"],
+      ["a leccia", "a liccia", "a leccia"],
+      ["u baracuccu (arburu)", "u baracuccu (arburu)", "u baracuccu (arburi)"],
+      ["a mela (arburu)", "a mela (arburu)", "a mela (arburi)"],
+      ["a prugna (arburu)", "a prugna (arburu)", "a prugna (arburi)"],
+      ["a vetrice", "a vetricia", "a vetricia"],
+      ["l'alivu", "l'alivu", "l'alivu"],
+      ["l'alzu", "l'alzu", "l'alzu"],
+      ["l'amandulu", "l'amandulu", "l'amandulu"],
+      ["l'olmu", "l'ulmu", "l'olmu"],
+      ["u caracutu", "u caracutu", "u caracutu"],
+      ["u castagnu", "u castagnu", "u castagnu"],
+      ["u chjarasgiu", "u chjarasgiu", "u chjarasgiu"],
+      ["u fagu", "u faiu", "u faiu"],
+      ["u frassu", "u frassu", "u frassu"],
+      ["u ghjallicu", "u ghjaddicu", "u ghjaddicu"],
+      ["u peru (arburu)", "u peru (arburu)", "u peru (arburi)"],
+      ["u pinu", "u pinu", "u pinu"],
+      ["u pinu lariciu", "u pinu lariciu", "u pinu lariciu"],
+      ["u piopu", "u piobbu", "u piobbu"],
+      ["u querciu", "u quarciu", "u quarciu"],
+      ["u salice", "u saliciu", "u saliciu"],
+      ["u sambucu", "u sambucu", "u sambucu"],
+      ["u sorbu", "u sorbu", "u sorbu"],
+      ["u tassu", "u tassu", "u tassu"]
+    ],
+    fruit: [
+      ["a castagna", "a castagna", "a castagna"],
+      ["a chjarasgia", "a chjarasgia", "a chjarasgia"],
+      ["a fraula", "a fraula", "a fraula"],
+      ["a lattera", "a lattara", "a lattara"],
+      ["a mandarina", "a mandarina", "a mandarina"],
+      ["a mela (fruttu)", "a mela (fruttu)", "a mela (fruttu)"],
+      ["a mela cutogna", "a mela cutogna", "a mela cutogna"],
+      ["a mela granata", "a mela granata", "a mela granata"],
+      ["a noce (fruttu)", "a noce (fruttu)", "a noce (fruttu)"],
+      ["a nucetta", "a nucetta", "a nucetta"],
+      ["a pastecca", "a pastecca", "a pastecca"],
+      ["a prescula (fruttu)", "a presca (fruttu)", "a prasca (fruttu)"],
+      ["a prugnola (fruttu)", "a prugnola (fruttu)", "a prugnola (fruttu)"],
+      ["l'amandula", "l'amandula", "l'amandula"],
+      ["l'uva", "l'uva", "l'uva"],
+      ["u baracuccu (fruttu)", "u baracuccu (fruttu)", "u baracuccu (fruttu)"],
+      ["u citrone (fruttu)", "u citronu (fruttu)", "u citronu (fruttu)"],
+      ["u ficu", "u ficu", "u ficu"],
+      ["u limone (fruttu)", "u limonu (fruttu)", "u limonu (fruttu)"],
+      ["u milone", "u milonu", "u milonu"],
+      ["u peru (fruttu)", "u peru (fruttu)", "u peru (fruttu)"],
+      ["u rubu", "u rubu", "u rubu"]
+    ],
+    vegetable: [
+      ["a carotta", "a carotta", "a carotta"],
+      ["a castagna", "a castagna", "a castagna"],
+      ["a cipolla", "a ciudda", "a ciuvodda"],
+      ["a fava", "a fava", "a fava"],
+      ["a geia", "a geia", "a geia"],
+      ["a melanzana", "a milanzana", "a milanzana"],
+      ["a pumata", "a pumata", "a pumata"],
+      ["a sela", "a sela", "a sela"],
+      ["a zucca", "a zucca", "a zucca"],
+      ["a zucchetta", "a zucchetta", "a zucchetta"],
+      ["l'aglia", "l'adda", "l'aglia"],
+      ["l'agliettu", "l'agliettu", "l'agliettu"],
+      ["l'artichjoccu", "l'artichjoccu", "l'artichjoccu"],
+      ["l'insalata", "l'insalata", "l'insalata"],
+      ["u carbusgiu", "u carbusgiu", "u carbusgiu"],
+      ["u cavulifiore", "u cavulifiori", "u cavulifiori"],
+      ["u cucumaru", "u cucumaru", "u cucumaru"],
+      ["u fasgiolu", "u fasgiolu", "u fasgiolu"],
+      ["u granone", "u granonu", "u granonu"],
+      ["u granu", "u granu", "u granu"],
+      ["u navone", "u navonu", "u navonu"],
+      ["u pisellu", "u piseddu", "u piseddu"],
+      ["u pivaronu", "u pivaronu", "u pivaronu"],
+      ["u pomu", "u pomu", "u pomu"],
+      ["u pomu dolce", "u pomu dolci", "u pomu dolci"],
+      ["u porru", "u porru", "u porru"],
+      ["u pursemulu", "u pursemulu", "u pursemulu"],
+      ["u radichju", "u radichju", "u radichju"],
+      ["u sellaru", "u seddaru", "u seddaru"]
+    ],
+    'celestial body': [
+      ["a Luna", "a Luna", "a Luna"],
+      ["a stella Diana", "a stedda Diana", "a stedda Diana"],
+      ["a stella Tramuntana", "a Tramuntana", "a Tramuntana"],
+      ["Marti", "Marti", "Marti"],
+      ["u Sole", "u Soli", "u Soli"]
+    ],
+    person: [
+      ["a sora", "a sora", "a sora"],
+      ["l'avaru", "l'avaru", "l'avaru"],
+      ["l'avvucatu (mistieru)", "l'avvucatu (mistieru)", "l'avvucatu (mistieri)"],
+      ["l'urtulanu", "l'urtulanu", "l'urtulanu"],
+      ["l'usceru", "l'usceru", "l'usceri"],
+      ["l'acillaghju", "l'aciddaghju", "l'aciddaghju"],
+      ["l'architettu", "l'architettu", "l'architettu"],
+      ["Carulu Magnu", "Carulu Magnu", "Carulu Magnu"],
+      ["Cicerone", "Ciciaronu", "Ciciaronu"],
+      ["Ghjesù Cristu", "Ghjesù Cristu", "Ghjesù Cristu"],
+      ["Lisandru Magnu", "Lisandru Magnu", "Lisandru Magnu"],
+      ["Maumettu", "Maumettu", "Maumettu"],
+      ["Napulione", "Nabulionu", "Nabulionu"],
+      ["Pasquale Paoli", "Pasquali Paoli", "Pasquali Paoli"],
+      ["Platone", "Platonu", "Platonu"],
+      ["San Paulu", "San Paulu", "San Paulu"],
+      ["San Petru", "San Petru", "San Petru"],
+      ["Sant'Antone", "Sant'Antonu", "Sant'Antonu"],
+      ["u bancalaru", "u bancalaru", "u bancalari"],
+      ["u barcaghjolu", "u barcaghjolu", "u barcaghjolu"],
+      ["u buiaghju", "u buiaghju", "u buiaghju"],
+      ["u cantadore", "u cantadori", "u cantadori"],
+      ["u capraghju", "u capraghju", "u capraghju"],
+      ["u circataghju", "u circataghju", "u circataghju"],
+      ["u cucinaru", "u cucinaru", "u cucinari"],
+      ["u dentistu", "u dintistu", "u dintistu"],
+      ["u ferrale", "u farrali", "u farrali"],
+      ["u frate", "u frati", "u frati"],
+      ["u ghjudice", "u ghjudici", "u ghjudici"],
+      ["u ghjurnalistu", "u ghjurnalistu", "u ghjurnalistu"],
+      ["u giandarmu", "u giandarmu", "u giandarmu"],
+      ["u lignaghjolu", "u lignaghjolu", "u lignaghjolu"],
+      ["u ligumaghju", "u ligumaghju", "u ligumaghju"],
+      ["u macillaru", "u maciddaru", "u maciddari"],
+      ["u manilargu", "u manilargu", "u manilargu"],
+      ["u marinaru", "u marinaru", "u marinari"],
+      ["u medicu", "u medicu", "u medicu"],
+      ["u merre", "u merri", "u merri"],
+      ["u militaru", "u militaru", "u militari"],
+      ["u mulinaghju", "u mulinaghju", "u mulinaghju"],
+      ["u muradore", "u muradori", "u muradori"],
+      ["u musicante", "u musicanti", "u musicanti"],
+      ["u nutaru", "u nutaru", "u nutaru"],
+      ["u panitteru", "u panitteri", "u panitteri"],
+      ["u pastore", "u pastori", "u pastori"],
+      ["u piscadore", "u piscadori", "u piscadori"],
+      ["u pittore", "u pittori", "u pittori"],
+      ["u poveru", "u povaru", "u povaru"],
+      ["u prete", "u preti", "u preti"],
+      ["u prufissore", "u prufissori", "u prufissori"],
+      ["u pueta", "u pueta", "u pueta"],
+      ["u puliticante", "u puliticanti", "u puliticanti"],
+      ["u purcaghju", "u purcaghju", "u purcaghju"],
+      ["u riccu", "u riccu", "u riccu"],
+      ["u scalpillinu", "u scalpiddinu", "u scalpiddinu"],
+      ["u scrittore", "u scrittori", "u scrittori"],
+      ["u spinghjifocu", "u spignifocu", "u spignifocu"],
+      ["u stazzunaghju", "u stazzunaghju", "u stazzunaghju"],
+      ["u studiente", "u studianti", "u studianti"],
+      ["u suldatu", "u suldatu", "u suldatu"],
+      ["u traculinu", "u traculinu", "u traculinu"],
+      ["u vescu", "u vescu", "u vescu"]
+    ]
+  };
+
+  const interfaceText = {
+    help: ['Aiutu', 'Aiutu', 'Aiutu', 'Aide', 'Aiuto', 'Help'],
+    about: ['À prupositu', 'À prupositu', 'À prupositu', 'À propos', 'A proposito', 'About'],
+    run: ['Tema', 'Tema', 'Tema', 'Tirage', 'Tema', 'Run'],
+    category: ['Categurie', 'Catigurii', 'Catigurii', 'Catégories', 'Categorie', 'Categories'],
+    all: ['tutte', 'tutti', 'tutti', 'toutes', 'tutte', 'all'],
+    animal: ['animale', 'animali', 'animali', 'animal', 'animale', 'animal'],
+    person: ['persona', 'parsona', 'parsona', 'personne', 'persona', 'person'],
+    tree: ['arburu', 'arburu', 'arburi', 'arbre', 'albero', 'tree'],
+    object: ['oghjettu', 'ughjettu', 'ughjettu', 'objet', 'ogetto', 'object'],
+    fruit: ['fruttu', 'fruttu', 'fruttu', 'fruit', 'frutto', 'fruit'],
+    vegetable: ['ligume', 'ligumu', 'ligumu', 'légume', 'legumo', 'vegetable'],
+    color: ['culore', 'culori', 'culori', 'couleur', 'colore', 'color'],
+    Double: ['Doppiu', 'Doppiu', 'Doppiu', 'Double', 'Doppio', 'Double'],
+    single: ['singulu', 'singulu', 'singulu', 'simple', 'singolo', 'single'],
+    double: ['doppiu', 'doppiu', 'doppiu', 'double', 'doppio', 'double'],
+    increaseFont: ['Tipugrafia: più maiore', 'Tipugrafia: più maiori', 'Tipugrafia: più maiori', 'Agrandir police caractères', 'Aumentare dimensione dei caratteri', 'Increase font size'],
+    decreaseFont: ['Tipugrafia: più minore', 'Tipugrafia: più minori', 'Tipugrafia: più minori', 'Réduire police caractères', 'Ridurre dimensione dei caratteri', 'Decrease font size'],
+    defaultMode: ['Modu currente', 'Modu currenti', 'Modu currenti', 'Mode par défaut', 'Modo predefinito', 'Default mode'],
+    targetLanguage: ['Lingua di destinazione', 'Lingua di distinazioni', 'Lingua di distinazioni', 'Langage-destination', 'Lingua di destinazione', 'Target language'],
+    savePreferences: ['Arrigistrà e preferenze', 'Arrighjistrà i prifarenzi', 'Arrighjistrà i prifarenzi', 'Sauvegarder préférences', 'Salva preferenze', 'Save preferences'],
+    interfaceLanguage: ["Lingua di l'interfaccia", "Lingua di l'intarfaccia", "Lingua di l'intarfaccia", "Langue de l'interface", "Lingua dell'interfaccia", 'Interface language'],
+    writingMode: ['Modu di scrittura', 'Modu di scrittura', 'Modu di scrittura', "Mode d'écriture", 'Modalità di scrittura', 'Writing mode'],
+    quit: ['Esce', 'Escia', 'Escia', 'Quitter', 'Uscire', 'Exit'],
+    title: ["Tema per u chjam'è rispondi", "Tema par u chjam'è rispondi", "Tema par u chjam'è rispondi", "Tema per u chjam'è rispondi", "Tema per u chjam'è rispondi", "Tema per u chjam'è rispondi"],
+    aboutText: [
+      "MIT License\n\nCopyright (c) 2020-2026 Paul Franceschi\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "MIT License\n\nCopyright (c) 2020-2026 Paul Franceschi\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "MIT License\n\nCopyright (c) 2020-2026 Paul Franceschi\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "MIT License\n\nCopyright (c) 2020-2026 Paul Franceschi\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "MIT License\n\nCopyright (c) 2020-2026 Paul Franceschi\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "MIT License\n\nCopyright (c) 2020-2026 Paul Franceschi\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+    ]
+  };
+
+  // State variables
+  const [targetLang, setTargetLang] = useState(CIS);
+  const [interfaceLang, setInterfaceLang] = useState(CIS);
+  const [mode, setMode] = useState('single');
+  const [category1, setCategory1] = useState('all');
+  const [category2, setCategory2] = useState('all');
+  const [outputText, setOutputText] = useState('');
+  const [fontSize, setFontSize] = useState(24);
+  const [showAbout, setShowAbout] = useState(false);
+
+  // Language options
+  const lsTargetLang = ['cismuntincu', 'sartinesu', 'taravesu'];
+  const lsInterfaceLang = ['cismuntincu', 'sartinesu', 'taravesu', 'français', 'italiano', 'english'];
+  const lsMode = ['single', 'double', '2x2', '3x2'];
+  const categories = ['all', 'animal', 'tree', 'person', 'object', 'fruit', 'vegetable'];
+
+  // Helper functions
+  const getRandomCategory = () => {
+    const keys = Object.keys(dic);
+    return keys[Math.floor(Math.random() * keys.length)];
+  };
+
+  const getRandomItem = (sCategory = 'all') => {
+    let sCat = sCategory;
+    if (sCategory === 'all') {
+      sCat = getRandomCategory();
+    }
+    const items = dic[sCat];
+    const randomIndex = Math.floor(Math.random() * items.length);
+    const first = items[randomIndex][targetLang];
+    const order = ['A', 'B'].sort(() => Math.random() - 0.5).join(',');
+    return [first, `(${order})`];
+  };
+
+  const getRandomDoubleItem = (sCategory1 = 'all', sCategory2 = 'all') => {
+    const dic1 = JSON.parse(JSON.stringify(dic));
+    let sCat1 = sCategory1 === 'all' ? getRandomCategory() : sCategory1;
+    let items1 = dic1[sCat1];
+    const index1 = Math.floor(Math.random() * items1.length);
+    const first = items1[index1][targetLang];
+    items1.splice(index1, 1);
+
+    let sCat2 = sCategory2 === 'all' ? getRandomCategory() : sCategory2;
+    let items2 = dic1[sCat2];
+    if (items2.length === 0 && sCategory2 === 'all') {
+      // If the same category was selected and only one item existed, pick another category
+      const otherCats = Object.keys(dic1).filter(cat => cat !== sCat2 && dic1[cat].length > 0);
+      if (otherCats.length > 0) {
+        sCat2 = otherCats[Math.floor(Math.random() * otherCats.length)];
+        items2 = dic1[sCat2];
+      }
+    }
+    const index2 = items2.length > 0 ? Math.floor(Math.random() * items2.length) : 0;
+    const second = items2.length > 0 ? items2[index2][targetLang] : '';
+    const order = ['A', 'B'].sort(() => Math.random() - 0.5).join(',');
+    return [first, second, `(${order})`];
+  };
+
+  const getRandom2x2Item = (sCategory = 'all') => {
+    const dic1 = JSON.parse(JSON.stringify(dic));
+    const items = [];
+    const orders = [];
+
+    for (let i = 0; i < 4; i++) {
+      let sCat = sCategory;
+      if (sCategory === 'all') {
+        const availableCats = Object.keys(dic1).filter(cat => dic1[cat].length > 0);
+        if (availableCats.length === 0) break;
+        sCat = availableCats[Math.floor(Math.random() * availableCats.length)];
+      }
+      const catItems = dic1[sCat];
+      if (catItems.length === 0) continue;
+      const index = Math.floor(Math.random() * catItems.length);
+      items.push(catItems[index][targetLang]);
+      catItems.splice(index, 1);
+    }
+
+    while (items.length < 4) {
+      items.push('');
+    }
+
+    const letters = ['A', 'B', 'C', 'D'].sort(() => Math.random() - 0.5);
+    orders.push(`(${letters[0]},${letters[1]})`);
+    orders.push(`(${letters[2]},${letters[3]})`);
+
+    return [...items, ...orders];
+  };
+
+  const getRandom3x2Item = (sCategory = 'all') => {
+    const dic1 = JSON.parse(JSON.stringify(dic));
+    const items = [];
+    const orders = [];
+
+    for (let i = 0; i < 6; i++) {
+      let sCat = sCategory;
+      if (sCategory === 'all') {
+        const availableCats = Object.keys(dic1).filter(cat => dic1[cat].length > 0);
+        if (availableCats.length === 0) break;
+        sCat = availableCats[Math.floor(Math.random() * availableCats.length)];
+      }
+      const catItems = dic1[sCat];
+      if (catItems.length === 0) continue;
+      const index = Math.floor(Math.random() * catItems.length);
+      items.push(catItems[index][targetLang]);
+      catItems.splice(index, 1);
+    }
+
+    while (items.length < 6) {
+      items.push('');
+    }
+
+    const letters = ['A', 'B', 'C', 'D', 'E', 'F'].sort(() => Math.random() - 0.5);
+    orders.push(`(${letters[0]},${letters[1]})`);
+    orders.push(`(${letters[2]},${letters[3]})`);
+    orders.push(`(${letters[4]},${letters[5]})`);
+
+    return [...items, ...orders];
+  };
+
+  const generateTheme = () => {
+    if (mode === 'single') {
+      const [first, order] = getRandomItem(category1);
+      setOutputText(`${first} ${order}`);
+    } else if (mode === 'double') {
+      const [first, second, order] = getRandomDoubleItem(category1, category2);
+      setOutputText(`${first}\nè\n${second} ${order}`);
+    } else if (mode === '2x2') {
+      const result = getRandom2x2Item(category1);
+      setOutputText(`${result[0]}\nè\n${result[1]} ${result[4]}\n${result[2]}\nè\n${result[3]} ${result[5]}`);
+    } else if (mode === '3x2') {
+      const result = getRandom3x2Item(category1);
+      setOutputText(
+        `${result[0]}\nè\n${result[1]} ${result[6]}\n${result[2]}\nè\n${result[3]} ${result[7]}\n${result[4]}\nè\n${result[5]} ${result[8]}`
+      );
+    }
+  };
+
+  const handleSavePreferences = () => {
+    localStorage.setItem('targetLang', targetLang.toString());
+    localStorage.setItem('interfaceLang', interfaceLang.toString());
+    localStorage.setItem('mode', mode);
+    localStorage.setItem('category1', category1);
+    localStorage.setItem('category2', category2);
+  };
+
+  useEffect(() => {
+    // Load preferences from localStorage if available
+    const savedTargetLang = localStorage.getItem('targetLang');
+    const savedInterfaceLang = localStorage.getItem('interfaceLang');
+    const savedMode = localStorage.getItem('mode');
+    const savedCategory1 = localStorage.getItem('category1');
+    const savedCategory2 = localStorage.getItem('category2');
+    
+    if (savedTargetLang !== null) {
+      setTargetLang(parseInt(savedTargetLang));
+    }
+    if (savedInterfaceLang !== null) {
+      setInterfaceLang(parseInt(savedInterfaceLang));
+    }
+    if (savedMode !== null) {
+      setMode(savedMode);
+    }
+    if (savedCategory1 !== null) {
+      setCategory1(savedCategory1);
+    }
+    if (savedCategory2 !== null) {
+      setCategory2(savedCategory2);
+    }
+  }, []);
+
+  useEffect(() => {
+    handleSavePreferences();
+  }, [targetLang, interfaceLang, mode, category1, category2]);
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-4">
+      {/* About Modal */}
+      {showAbout && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <h2 className="text-xl font-bold mb-4">{interfaceText.about[interfaceLang]}</h2>
+            <p className="whitespace-pre-line text-sm">{interfaceText.aboutText[interfaceLang]}</p>
+            <button
+              onClick={() => setShowAbout(false)}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 className="text-2xl font-bold text-center mb-6">{interfaceText.title[interfaceLang]}</h1>
+
+        {/* Output Display */}
+        <div className="mb-6 p-4 bg-gray-800 rounded-lg min-h-[120px] flex items-center justify-center">
+          <div
+            className="text-yellow-300 font-bold text-center whitespace-pre-wrap"
+            style={{ fontSize: `${fontSize}px` }}
+          >
+            {outputText}
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="grid grid-cols-1 gap-4 mb-6">
+          <button
+            onClick={generateTheme}
+            className="bg-green-500 text-white py-3 px-4 rounded-lg hover:bg-green-600 transition w-full"
+          >
+            {interfaceText.run[interfaceLang]}
+          </button>
+          <div className="grid grid-cols-2 gap-4">
+            <button
+              onClick={() => setFontSize(prev => Math.min(prev + 2, 48))}
+              className="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition"
+            >
+              {interfaceText.increaseFont[interfaceLang]}
+            </button>
+            <button
+              onClick={() => setFontSize(prev => Math.max(prev - 2, 12))}
+              className="bg-red-500 text-white py-3 px-4 rounded-lg hover:bg-red-600 transition"
+            >
+              {interfaceText.decreaseFont[interfaceLang]}
+            </button>
+          </div>
+        </div>
+
+        {/* Mode Selection */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">{interfaceText.defaultMode[interfaceLang]}</label>
+          <select
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+            className="w-full p-2 border rounded"
+          >
+            {lsMode.map((m, index) => (
+              <option key={m} value={m}>
+                {index < 2 ? interfaceText[m][interfaceLang] : m}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Category Selection */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">{interfaceText.category[interfaceLang]}</label>
+          <select
+            value={category1}
+            onChange={(e) => setCategory1(e.target.value)}
+            className="w-full p-2 border rounded mb-2"
+          >
+            {categories.map(cat => (
+              <option key={cat} value={cat}>
+                {interfaceText[cat][interfaceLang]}
+              </option>
+            ))}
+          </select>
+          {mode === 'double' && (
+            <select
+              value={category2}
+              onChange={(e) => setCategory2(e.target.value)}
+              className="w-full p-2 border rounded"
+            >
+              {categories.map(cat => (
+                <option key={cat} value={cat}>
+                  {interfaceText[cat][interfaceLang]}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+
+        {/* Language Selection */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium mb-2">{interfaceText.targetLanguage[interfaceLang]}</label>
+            <select
+              value={targetLang}
+              onChange={(e) => setTargetLang(parseInt(e.target.value))}
+              className="w-full p-2 border rounded"
+            >
+              {lsTargetLang.map((lang, index) => (
+                <option key={lang} value={index}>
+                  {lang}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">{interfaceText.interfaceLanguage[interfaceLang]}</label>
+            <select
+              value={interfaceLang}
+              onChange={(e) => setInterfaceLang(parseInt(e.target.value))}
+              className="w-full p-2 border rounded"
+            >
+              {lsInterfaceLang.map((lang, index) => (
+                <option key={lang} value={index}>
+                  {lang}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* About Button */}
+        <button
+          onClick={() => setShowAbout(true)}
+          className="w-full bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600 transition"
+        >
+          {interfaceText.about[interfaceLang]}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default App;
